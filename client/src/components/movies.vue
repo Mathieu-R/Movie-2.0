@@ -1,27 +1,18 @@
 <template>
   <div class="movies">
-    <movie v-for="movie in movies" class="movie"></movie>
+    <movie :movie="movie" v-for="movie in movies" class="movie"></movie>
   </div>
 </template>
 
 <script>
 
-  import Movie from './components/movie'
+  import Movie from './movie'
 
   export default {
-    components: {Movie},
-    mounted: {
-      fetch('/')
-        .then((response) => {
-          console.log(response.json())
-        })
-        .then((data) => {
-          console.log(data)
-        })
-        .catch((e) => {
-          throw new Error(e);
-        })
-    }
+    props: {
+      movies: Array
+    },
+    components: { Movie },
   }
 
 </script>

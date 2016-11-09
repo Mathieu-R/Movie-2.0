@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon server.js"
+    "dev": "concurrently -k \"node ../client/build/dev-server.js\" \"nodemon server.js\"",
+    "build": "concurrently -k \"node ../client/build/build.js\" \"nodemon server.js\""
   },
   "keywords": [
     "movie"
@@ -14,6 +15,7 @@
   "license": "MIT",
   "dependencies": {
     "body-parser": "^1.15.2",
+    "concurrently": "^3.1.0",
     "express": "^4.14.0",
     "morgan": "^1.7.0",
     "moviedb": "^0.2.7",

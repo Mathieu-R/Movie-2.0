@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a href="#" class="movie-trigger">
+    <a href="#" class="movie-trigger" @click.prevent="quickView(movie.id)">
 		  <img :src="'http://image.tmdb.org/t/p/w500' + movie.poster_path" alt="movie-preview">
     </a>
 
@@ -8,7 +8,7 @@
 
       <a href="#" class="quick-view-close">X</a>
 
-  		<img :src="{{getPoster(movie.poster_path)}}" alt="poster" class="quick-view-poster">
+  		<img :src="'http://image.tmdb.org/t/p/w500' + movie.poster_path" alt="poster" class="quick-view-poster">
 
       <div class="quick-view-info">
         <h2>{{movie.title}}</h2>
@@ -31,26 +31,22 @@
 <script>
   export default {
     methods: {
-      quickView() {
+      quickView(id) {
         // Expand view,...
 
-        fetch("/trailer", {
+        fetch("/api/trailer", {
           method: POST,
-          id: id
+          body: {id: id}
         })
-          .success(function(data) {
-            $scope.trailer = data.youtube;
-            // console.log(data);
+          .then((response) => {
+            console.log(response.json());
           })
-          .error(function(err) {
-            $log.log("ERROR: Movie trailer not received")
-            $log.warn(err);
-            $(".titre").text("Trailer non trouvé !")
+          .then((data) => {
+            console.log(data)
           })
-          .then(function() {
-            var url = $scope.trailer[0].source;
-            $scope.config.sources[0] = trailer.getTrailer(url);
-            $scope.showTrailer = true;
+          .catch((e) => {
+            console.log("ERROR: Movie trailer not received");
+            console.log(e);
           })
       }
     }
