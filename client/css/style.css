@@ -1,0 +1,304 @@
+body {
+	font-family: Lato;
+	font-size: 1em;
+	margin: 0;
+	width: 100%;
+	overflow-x: hidden;
+	/*overflow-y: scroll; */
+	/*position: fixed;*/
+
+}
+
+body::after {
+  /* dark overlay layer - visible when we fire .movie-quick-view */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(71, 55, 78, 0.8);
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.3s 0s, visibility 0s 0.3s;
+}
+
+header {
+	font-size: 1.5em;
+	height: 50px;
+	width: 100%;
+	display: flex;
+	align-items: center;
+	background: #f1c40f;
+}
+
+
+.menu > ul {
+	list-style: none;
+	display: flex;
+}
+
+.menu > ul > li {
+	padding: 0 20px;
+	opacity: 0.5;
+}
+
+.menu > ul > li > a {
+	text-decoration: none;
+	color: black;
+}
+
+#fixChamps {
+	align-items: center;
+}
+
+main {
+	
+}
+
+.movie-container {
+	max-width: 1200px;
+	margin: 0 auto;
+}
+
+.movie-item {
+	width: 22%;
+	float: left;
+	margin: 0 4% 2.8em 0;
+}
+
+.movie-item img {
+	display: block;
+	width: 100%;
+}
+
+.movie-trigger {
+	position: absolute;
+	height: 50px;
+	line-height: 50px;
+	width: 100%;
+	bottom: 0;
+	left: 0;
+	background: rgba(0, 0, 0, 0.1);
+	text-align: center;
+	-webkit-font-smoothing: antialiased;
+	color: white;
+	opacity: 0;
+	transition: opacity 0.2s, background 0.2s;
+}
+
+.movie-quick-view {
+    display: block;
+    position: fixed;
+    max-width: 900px;
+    visibility: hidden;
+ 
+    /* Force Hardware Acceleration in WebKit */
+    transform: translateZ(0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    will-change: left, top, width;
+    z-index: 1;
+}
+
+.movie-slider-wrapper {
+	position: relative;
+	display: inline-block;
+	float: left;
+}
+
+.movie-slider {
+	float: left;
+}
+
+.movie-slider-navigation {
+	opacity: 0;
+}
+
+.movie-slider-navigation:first-child {
+	left: 0;
+}
+
+.movie-slider-navigation:last-child {
+	right: 3em;
+}
+
+.movie-slider-navigation li {
+	position: absolute;
+	top: 50%;
+	bottom: auto;
+	transform: translateY(-50%);
+	z-index: 3;
+}
+
+.add-content .movie-slider-navigation li a {
+	opacity: 0.2;
+}
+
+.movie-slider-navigation li a {
+	display: block;
+	width: 40px;
+	height: 50px;
+	overflow: hidden;
+	text-indent: 100%;
+	white-space: nowrap;
+	transform: translateZ(0);
+	backface-visibility: hidden;
+	transition: opacity 0.2s, background 0.2s;
+}
+
+.add-content .movie-item-info {
+	position: relative;
+	visibility: visible;
+	opacity: 1;
+}
+
+.movie-item-info {
+	position: absolute;
+	padding: 3em 3em 3em 0;
+	visibility: hidden;
+	opacity: 0;
+	transition: opacity 0.3s visibility 0s;
+}
+
+.add-content .movie-close {
+	visibility: visible;
+	transform: scale(1);
+	transition: transform 0.3s 0s, visibility 0s 0s;
+}
+
+.movie-close {
+	position: absolute;
+	top: 10px
+	right: 10px;
+	display: inline-block;
+	width: 30px;
+	overflow: hidden;
+	text-indent: 100%;
+	white-space: nowrap;
+	visibility: hidden;
+	transform: scale(0);
+	transition: transform 0.3s 0s, visibility 0s 0s;
+}
+
+.movie-quick-view.animate-width {
+	background: white;
+	box-shadow: 0 0 30px rgba(0, 0, 0, 0.2);
+	transition: box-shadow 0.3s;
+}
+
+.movie-quick-view.is-visible {
+	visibility: visible;
+}
+
+a {
+	text-decoration: none; 
+}
+
+ul, ol {
+	list-style: none;
+}
+
+.movie {
+	margin-top: 20px;
+}
+
+.titre {
+	background: #3E4FB2;
+	text-align: center;
+	margin: 0;
+	padding: 10px;
+	color: white;
+	font-family: Roboto;
+}
+
+.infos {
+	/*display: inline-flex;*/
+	height: 400px;
+}
+.importantInfosContainer {
+	display: inline-flex;
+	width: 100%;
+	height: 400px;
+}
+
+.importantInfos {
+	height: 400px;
+}
+
+.details {
+	z-index: -1;
+	height: 150px;
+	padding-left: 270px;
+}
+
+.poster {
+	height: 400px;
+	opacity: 0.7
+}
+
+.poster:hover{
+	opacity: 1;
+	transition: opacity 0.3s linear;
+	cursor: pointer;
+}
+
+.backdrop {
+	height: 200px;
+}
+
+aside {
+	margin: 20px;
+}
+
+.originalTitle, .originalLanguage, .dateSortie {
+	color: #34495e;
+	margin: auto;
+	text-align: center;
+}
+
+.rating {
+	text-align: center;
+	padding: 0;
+}
+
+.rating li {
+	list-style: none;
+	display: inline-block;
+	color: #aaa;
+	text-decoration: none;
+	font-size: 2em;
+}
+
+.descriptionText {
+	font-family: Montserrat;
+}
+
+
+.trailer {
+	position: absolute;
+}
+
+.genre > li {
+	display: inline-block;
+	color: #34495e;
+	margin: 5px 15px;
+	padding: 7px;
+	font-family: Roboto;
+}
+
+.search {
+	height: 30px;
+	width: 115px;
+	transition: width 0.3s;
+	border-radius: 10px;
+	font-family: Roboto;
+	font-size: 18px;
+	border: none;
+  	outline: none;
+  	text-indent: 5px;
+}
+
+.searchOn {
+	width: 300px;
+	transition: width 0.3s;
+}
