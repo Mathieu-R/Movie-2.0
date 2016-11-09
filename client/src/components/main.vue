@@ -29,11 +29,12 @@
       topMovie () {
         fetch('/api/top')
           .then((response) => {
-            console.log(response.json());
+            return response.json();
           })
           .then((data) => {
-            console.log(data);
+            return data;
           })
+          .then(data => this.movies = data.results)
           .catch(e => {
             console.log("ERROR: Top movies not received");
             console.log(e);
@@ -43,11 +44,12 @@
       theatersMovie () {
         fetch('/api/theaters')
           .then((response) => {
-            console.log(response.json());
+            return response.json();
           })
           .then((data) => {
-            $(".titre").text("La liste des films actuellement au cinéma n'a pu être trouvée !")
+            return data;
           })
+          .then(data => this.movies = data.results)
           .catch((e) => {
             console.log("ERROR: Film in theaters not received")
             console.log(e);
@@ -56,15 +58,16 @@
 
       searchMovie () {
         fetch("/api/query", {
-          method: POST,
+          method: "POST",
           body: {search: this.search}
         })
           .then((response) => {
-            console.log(response.json())
+            return response.json()
           })
           .then((data) => {
-            console.log(data)
+            return data
           })
+          .then(data => this.movies = data.results)
           .catch((e) => {
             console.log("ERROR: Movie data not received")
             console.log(e);
@@ -78,11 +81,12 @@
       //this.topMovies;
       fetch("/api/top")
         .then((response) => {
-          console.log(response.json())
+          return response.json();
         })
         .then((data) => {
-          console.log(data)
+          return data;
         })
+        .then(data => this.movies = data.results)
         .catch((e) => {
           throw new Error(e);
         })
@@ -91,7 +95,7 @@
   }
 </script>
 
-<style scoped>
+<style>
   header {
     font-size: 1.5em;
     height: 50px;
@@ -111,7 +115,7 @@
     opacity: 0.5;
   }
 
-  .menu > ul > li > a {
+  a {
     text-decoration: none;
     color: black;
   }

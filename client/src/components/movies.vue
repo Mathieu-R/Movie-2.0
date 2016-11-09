@@ -19,10 +19,21 @@
 
 <style>
   .movies {
-    display: inline-flex;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
   }
 
-  movie {
+  .movie {
     margin: 15px;
+    flex: 1 0 auto;
+    width: 25%;
+    border-radius: 4px;
+    opacity: 1;
+    transition: .2s opacity linear;
+  }
+
+  .movie:hover {
+    opacity: 0.7;
   }
 </style>
