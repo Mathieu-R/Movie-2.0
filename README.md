@@ -1,7 +1,7 @@
 # Movie-2.0
 Show the main informations about the last movies / top movies / a movie that you search
 
-# Tech
+## Tech
 
 - ES6
 - WebPack
