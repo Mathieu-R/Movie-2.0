@@ -1,8 +1,4 @@
-var movie = angular.module('movie', ['ngMaterial', 
-									"ngSanitize",
-									"com.2fdevs.videogular",
-									"com.2fdevs.videogular.plugins.controls",
-  									"info.vietnamcode.nampnq.videogular.plugins.youtube"
+var movie = angular.module('movie', [
 									]);
 
 movie.service('trailer', ["$sce", function($sce) {
@@ -16,37 +12,11 @@ movie.service('trailer', ["$sce", function($sce) {
 	return {
 		getTrailer: getTrailer
 	}
-		
+
 }])
 
 movie.controller('mainCtrl', function($scope, $http, $log, $sce, trailer){
 
-	$scope.config = {
-					preload: "none",
-					sources: [
-						//{src: "http://www.youtube.com/watch?v=VLgCTBjctVc", type: "video/mp4"},
-						// {src: $sce.trustAsResourceUrl("http://static.videogular.com/assets/videos/videogular.webm"), type: "video/webm"},
-						// {src: $sce.trustAsResourceUrl("http://static.videogular.com/assets/videos/videogular.ogg"), type: "video/ogg"}
-						],
-					theme: {
-						url: "http://www.videogular.com/styles/themes/default/latest/videogular.css"
-					},
-					plugins: {
-						controls: {
-							autoHide: true,
-							autoHideTime: 5000
-						}
-					}
-				};
-
-
-	$scope.movies = {}
-	$scope.currentMovie;
-
-	$scope.loader = false;
-	$scope.canvas = true;
-	$scope.showDetails = false;
-	$scope.showTrailer = false;
 
 	$scope.getPoster = function getPoster(poster) {
 		return $sce.trustAsResourceUrl('http://image.tmdb.org/t/p/w500' + poster);
@@ -63,7 +33,6 @@ movie.controller('mainCtrl', function($scope, $http, $log, $sce, trailer){
 	$scope.topMovie = function topMovie() {
 
 		$scope.loader = true;
-		$scope.canvas = false;
 		$scope.movies = {};
 
 		$http.get('/top')
@@ -87,7 +56,7 @@ movie.controller('mainCtrl', function($scope, $http, $log, $sce, trailer){
 		$scope.canvas = false;
 		$scope.movies = {};
 		$scope.movie = {};
-	
+
 		$http.get('/theaters')
 			.success(function(data) {
 				$scope.movies = data.results;
