@@ -26,7 +26,6 @@
 
   .movie {
     margin: 15px;
-    width: 270px;
   }
 
 
