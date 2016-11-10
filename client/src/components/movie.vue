@@ -1,8 +1,15 @@
 <template>
   <div>
-    <a href="#" class="movie-trigger" @click.prevent="quickView(movie.id)">
-		  <img :src="'http://image.tmdb.org/t/p/w500' + movie.poster_path" alt="movie-preview" class="movie-poster">
-    </a>
+
+    <section class="movie-preview">
+      <a href="#" class="movie-preview-link" @click.prevent="showQuickView(movie.id)">
+        <img :src="'http://image.tmdb.org/t/p/w500' + movie.poster_path" alt="movie-preview-poster" class="movie-poster">
+      </a>
+      <h3 class="movie-preview-title">{{ movie.original_title }}</h3>
+      <div class="movie-preview-note">
+        {{ movie.note_average }}
+      </div>
+    </section>
 
     <div class="quick-view" v-if="quickView">
 
@@ -35,11 +42,12 @@
     },
     data () {
       return {
-        quickView: true
+        quickView: false
       }
     },
     methods: {
-      quickView(id) {
+      showQuickView(id) {
+        this.quickView = false;
         // Expand view,...
 
         fetch("/api/trailer", {
@@ -57,7 +65,6 @@
             console.log("ERROR: Movie trailer not received");
             console.log(e);
           })
-          //.then(_ => this.quickView = true);
       }
     }
 
@@ -66,12 +73,30 @@
 
 <style>
 
+.movie-preview {
+  padding: 5px;
+  background: gray;
+  border-radius: 5px;
+  width: 275px;
+  color: #fff;
+  text-align: center;
+}
+
 .movie-poster {
-  height: 500px;
+  height: 400px;
 }
 
 .quick-view-poster {
   height: 500px;
+}
+
+.movie-preview-poster {
+    opacity: 1;
+    transition: .2s opacity linear;
+}
+
+.movie-preview-poster:hover {
+  opacity: 0.7;
 }
 
 </style>

@@ -3,14 +3,17 @@
     <header class="header">
 			<nav class="menu">
 				<ul>
-					<li><a href="">Home</a></li>
 					<li><a @click="topMovie" href="#">Top</a></li>
 					<li @click="theatersMovie"><a href="#">Films actuellements au cinéma</a></li>
 					<li id="fixChamps"><input type=text v-model=search class="search" placeholder="Recherche..." @click.prevent="searchMovie"></li>
 				</ul>
 			</nav>
 		</header>
-    <movies :movies="movies"></movies>
+    <section class="loading-wrapper" v-show=loading>
+        <div class="loading"></div>Fetching...
+    </section>
+    <movies :movies="movies">
+    </movies>
   </div>
 </template>
 
@@ -21,7 +24,8 @@
     data() {
       return {
         search: '',
-        movies: []
+        movies: [],
+        loading: true
       }
     },
     components: { movies },
@@ -90,12 +94,65 @@
         .catch((e) => {
           throw new Error(e);
         })
+        .then(() => this.loading = false);
     }
 
   }
 </script>
 
-<style>
+<style lang="scss">
+
+  .loading-wrapper {
+    font-family: Roboto;
+    font-size: 3em;
+    font-weight: bold;
+    color: #afafaf;
+
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+  }
+
+  .loading {
+    position: relative;
+    right: 20px;
+    width: 6px;
+    height: 0.7em;
+    background: rgba(255, 255, 255, 0.1);
+    animation: pulse 750ms infinite;
+    animation-delay: 250ms;
+  }
+
+  .loading:before, .loading:after {
+    content: '';
+    position: absolute;
+    display: block;
+    height: 0.5em;
+    width: 6px;
+    background: rgba(255, 255, 255, 0.2);
+    top: 50%;
+    transform: translateY(-50%);
+    animation: pulse 750ms infinite;
+  }
+
+  .loading:before {
+    left: -12px;
+  }
+
+  .loading:after {
+    left: 12px;
+    animation-delay: 500ms;
+  }
+
+  @keyframes pulse {
+    50% {background: gray;}
+  }
+
   header {
     font-size: 1.5em;
     height: 50px;
@@ -122,5 +179,15 @@
 
   #fixChamps {
     align-items: center;
+  }
+
+  .search {
+    border-radius: 10px;
+    border: none;
+    outline: none;
+    height: 25px;
+    padding-left: 10px;
+    font-family: Roboto;
+    font-size: 0.7em;
   }
 </style>

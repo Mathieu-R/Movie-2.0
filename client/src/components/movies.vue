@@ -26,14 +26,8 @@
 
   .movie {
     margin: 15px;
-    flex: 1 0 auto;
-    width: 25%;
-    border-radius: 4px;
-    opacity: 1;
-    transition: .2s opacity linear;
+    width: 270px;
   }
 
-  .movie:hover {
-    opacity: 0.7;
-  }
+
 </style>
