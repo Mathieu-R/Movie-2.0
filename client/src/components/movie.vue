@@ -13,21 +13,24 @@
 
     <div class="quick-view" v-if="quickView">
 
-      <a href="#" class="quick-view-close" @click.prevent="closeQuickView">X</a>
+      <section class="quick-view-trailer" >
+        <a :href="'http://www.youtube.com/watch?v=' + movie.trailer" class="quick-view-trailer-link" v-if="!trailer" @click=showTrailer>
+          <img role="presentation" src="../assets/img/trailer.jpg">
+        </a>
+        <iframe class="quick-view-trailer-player" :src="'http://www.youtube.com/watch?v=' + movie.trailer" v-if="trailer"></iframe>
+      </section>
 
-  		<img :src="'http://image.tmdb.org/t/p/w500' + movie.poster_path" alt="poster" class="quick-view-poster">
+
 
       <div class="quick-view-info">
-        <h2>{{movie.title}}</h2>
-        <h3 class=quick-view-title>{{movie.original_title}} - {{movie.original_language}} - {{movie.release_date}}</h3>
-        <p class="quick-view-note"></p>
-        <!--<ul class="quick-view-genres">
-          <li v-for="genre in genres">#{{genre.name}}</li>
-        </ul>-->
-        <p class="quick-view-description">{{movie.overview}}</p>
-        <section class="quick-view-trailer" >
-          <a :href="'http://www.youtube.com/watch?v=' + movie.trailer"></a>
-        </section>
+        <h2 class="quick-view-title">{{movie.title}}</h2>
+        <h5 class=quick-view-subtitles>{{movie.original_title}} - {{movie.original_language}} - {{movie.release_date}} - <span class="movie-preview-note">{{movie.vote_average}}</span></h5>
+        <div class="quick-view-subblock">
+          <img :src="'http://image.tmdb.org/t/p/w500' + movie.poster_path" alt="poster" class="quick-view-poster">
+          <div class="quick-view-description">
+            <p class="quick-view-description-p">{{movie.overview}}</p>
+          </div>
+        </div>
       </div>
 
     </div>
@@ -42,12 +45,12 @@
     },
     data () {
       return {
-        quickView: false
+        quickView: false,
+        trailer: false
       }
     },
     methods: {
       showQuickView(id) {
-        console.log("view");
         this.quickView = true;
         // Expand view,...
 
@@ -67,6 +70,9 @@
             console.log(e);
           })
       },
+      showTrailer () {
+        this.trailer = true;
+      },
       closeQuickView() {
         this.quickView = false;
       }
@@ -77,9 +83,13 @@
 
 <style>
 
+h1, h2, h3 {
+  margin: 10px;
+}
+
 .movie-preview {
   padding: 10px 5px;
-  background: #afafaf;
+  background: #5e5f60;
   border-radius: 5px;
   width: 275px;
   color: #fff;
@@ -87,7 +97,7 @@
 }
 
 .quick-view-poster {
-  height: 500px;
+  height: 250px;
 }
 
 .movie-preview-poster {
@@ -112,23 +122,62 @@
 }
 
 .quick-view {
+  width: 750px;
+  background: #5e5f60;
+  padding: 15px;
+  overflow: hidden;
+}
+
+.quick-view-trailer-link:before {
+  content: '';
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: #f2dd82;
-  padding: 15px;
-  overflow: hidden;
+  background: url("../assets/img/play.svg") center center no-repeat;
 }
 
-.quick-view-close {
-  position: absolute;
-  top: 5px;
-  right: 10px;
-  font-size: 3vh;
-  font-weight: bold;
-  color: gray;
+.quick-view-trailer-link > img {
+  width: 750px;
 }
+
+.quick-view-trailer-player {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.quick-view-info {
+  margin-top: 10px;
+  width: 100%;
+  text-align: center;
+}
+
+.quick-view-subtitles {
+  font-family: Montserrat;
+  font-style: italic;
+  border-bottom: 4px solid white;
+  padding-bottom: 10px;
+}
+
+.quick-view-subblock {
+  display: flex;
+  flex-direction: row;
+}
+
+.quick-view-poster {
+
+}
+
+.quick-view-description {
+  margin-left: 10px;
+  padding: 5px;
+  line-height: 1.5em;
+}
+
 
 </style>
