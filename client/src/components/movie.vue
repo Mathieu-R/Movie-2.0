@@ -87,6 +87,10 @@ h1, h2, h3 {
   margin: 10px;
 }
 
+img {
+    max-width: 100%;
+}
+
 .movie-preview {
   padding: 10px 5px;
   background: #5e5f60;
