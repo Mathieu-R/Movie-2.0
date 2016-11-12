@@ -14,10 +14,10 @@
     <div class="quick-view" v-if="quickView">
 
       <section class="quick-view-trailer" >
-        <a :href="'http://www.youtube.com/watch?v=' + movie.trailer" class="quick-view-trailer-link" v-if="!trailer" @click=showTrailer>
+        <a :href="'http://www.youtube.com/watch?v=' + trailerSRC" class="quick-view-trailer-link" v-if="!trailer" @click.prevent=showTrailer>
           <img role="presentation" src="../assets/img/trailer.jpg">
         </a>
-        <iframe class="quick-view-trailer-player" :src="'http://www.youtube.com/watch?v=' + movie.trailer" v-if="trailer"></iframe>
+        <iframe class="quick-view-trailer-player" :src="'http://www.youtube.com/embed/' + trailerSRC " v-if="trailer"></iframe>
       </section>
 
 
@@ -46,17 +46,22 @@
     data () {
       return {
         quickView: false,
-        trailer: false
+        trailer: false,
+        trailerSRC: ''
       }
     },
     methods: {
       showQuickView(id) {
+        console.log(id);
         this.quickView = true;
         // Expand view,...
 
         fetch("/api/trailer", {
           method: "POST",
-          body: {id: id}
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({id: id})
         })
           .then((response) => {
             return response.json();
@@ -64,7 +69,7 @@
           .then((data) => {
             return data;
           })
-          .then(data => this.movies = data.results)
+          .then(data => this.trailerSRC = data.youtube[0].source)
           .catch((e) => {
             console.log("ERROR: Movie trailer not received");
             console.log(e);
@@ -132,6 +137,19 @@ img {
   overflow: hidden;
 }
 
+.quick-view-trailer {
+  position: relative;
+  max-width: 750px;
+  min-height: 375px;
+}
+
+.quick-view-trailer-link {
+  display: flex;
+  position: relative;
+  max-width: 750px;
+  max-height: 375px;
+}
+
 .quick-view-trailer-link:before {
   content: '';
   position: absolute;
@@ -140,6 +158,7 @@ img {
   width: 100%;
   height: 100%;
   background: url("../assets/img/play.svg") center center no-repeat;
+  color: white;
 }
 
 .quick-view-trailer-link > img {
@@ -148,8 +167,8 @@ img {
 
 .quick-view-trailer-player {
   position: relative;
-  width: 100%;
-  height: 100%;
+  min-width: 750px;
+  min-height: 375px;
   display: flex;
   justify-content: center;
   align-items: center;

@@ -5,14 +5,14 @@
 				<ul>
 					<li><a @click="topMovie" href="#">Top</a></li>
 					<li @click="theatersMovie"><a href="#">Films actuellements au cinéma</a></li>
-					<li id="fixChamps"><input type=text v-model=search class="search" placeholder="Recherche..." @click.prevent="searchMovie"></li>
+					<li id="fixChamps"><input type=text v-model=search class="search" placeholder="Recherche..." @keyup.enter="searchMovie"></li>
 				</ul>
 			</nav>
 		</header>
-    <section class="loading-wrapper" v-show=loading>
+    <section class="loading-wrapper" v-show="loading">
         <div class="loading"></div>Fetching...
     </section>
-    <movies :movies="movies">
+    <movies :movies="movies" v-show="!loading">
     </movies>
   </div>
 </template>
@@ -31,6 +31,7 @@
     components: { movies },
     methods: {
       topMovie () {
+        this.loading = true;
         fetch('/api/top')
           .then((response) => {
             return response.json();
@@ -43,9 +44,11 @@
             console.log("ERROR: Top movies not received");
             console.log(e);
           })
+          .then(() => this.loading = false)
       },
 
       theatersMovie () {
+        this.loading = true
         fetch('/api/theaters')
           .then((response) => {
             return response.json();
@@ -58,12 +61,17 @@
             console.log("ERROR: Film in theaters not received")
             console.log(e);
           })
+          .then(() => this.loading = false)
       },
 
       searchMovie () {
+        this.loading = true
         fetch("/api/query", {
           method: "POST",
-          body: {search: this.search}
+          headers: {
+            'Content-type': 'application/json'
+          },
+          body: JSON.stringify({search: this.search})
         })
           .then((response) => {
             return response.json()
@@ -76,9 +84,8 @@
             console.log("ERROR: Movie data not received")
             console.log(e);
           })
-          .then(function() {
-            this.search = "";
-          })
+          .then(() => this.search = "")
+          .then(() => this.loading = false)
       }
     },
     mounted () {
