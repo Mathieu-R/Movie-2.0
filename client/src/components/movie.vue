@@ -1,7 +1,7 @@
 <template>
   <div>
 
-    <section class="movie-preview">
+    <section class="movie-preview" :id="movie.id">
       <a href="#" class="movie-preview-link" >
         <img :src="'http://image.tmdb.org/t/p/w500' + movie.poster_path" alt="movie-poster" class="movie-preview-poster" @click.prevent="showQuickView(movie.id)">
       </a>
@@ -11,16 +11,18 @@
       </span>
     </section>
 
-    <div class="quick-view" v-if="quickView">
+    <transition name="zoom" v-on:before-enter="beforeEnter">
+    <div class="quick-view" v-show="quickView">
 
-      <section class="quick-view-trailer" >
-        <a :href="'http://www.youtube.com/watch?v=' + trailerSRC" class="quick-view-trailer-link" v-if="!trailer" @click.prevent=showTrailer>
-          <img role="presentation" src="../assets/img/trailer.jpg">
-        </a>
-        <iframe class="quick-view-trailer-player" :src="'http://www.youtube.com/embed/' + trailerSRC " v-if="trailer"></iframe>
-      </section>
-
-
+      <div class="close" @click="closeQuickView">X</div>
+      <div class="quick-view-trailer-wrapper">
+        <section class="quick-view-trailer" >
+          <a :href="'http://www.youtube.com/watch?v=' + trailerSRC" class="quick-view-trailer-link" v-if="!trailer" @click.prevent=showTrailer>
+            <img role="presentation" src="../assets/img/trailer.jpg">
+          </a>
+          <iframe class="quick-view-trailer-player" :src="'http://www.youtube.com/embed/' + trailerSRC " v-if="trailer"></iframe>
+        </section>
+      </div>
 
       <div class="quick-view-info">
         <h2 class="quick-view-title">{{movie.title}}</h2>
@@ -34,6 +36,7 @@
       </div>
 
     </div>
+    </transition>
 
   </div>
 </template>
@@ -51,10 +54,25 @@
       }
     },
     methods: {
+      beforeEnter(el) {
+        const preview = document.getElementById(this.movie.id);
+        const previewBCR = preview.getBoundingClientRect();
+
+        const offsetTop = preview.offsetTop;
+        const offsetView = previewBCR.top;
+        const deplacement = offsetTop - offsetView - 15;
+
+        console.log(offsetTop, offsetView);
+        console.log(deplacement);
+
+        el.style.transform = `translateY(${deplacement}px)`;
+
+      },
       showQuickView(id) {
-        console.log(id);
+
+        document.body.style.overflow = 'hidden';
+
         this.quickView = true;
-        // Expand view,...
 
         fetch("/api/trailer", {
           method: "POST",
@@ -80,6 +98,7 @@
       },
       closeQuickView() {
         this.quickView = false;
+        document.body.style.overflow = 'scroll';
       }
     }
 
@@ -130,11 +149,56 @@ img {
   margin-bottom: 3px;
 }
 
+.quick-view::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  opacity: 0;
+  transition: opacity .3s linear;
+}
+
 .quick-view {
-  width: 750px;
+  position: absolute;
+  top: 75px;
+  left: 50px;
+  right: 50px;
+  bottom: 50px;
+  height: 100%;
   background: #5e5f60;
   padding: 15px;
   overflow: hidden;
+  border-radius: 10px;
+  opacity: 1;
+  transform: scale(1);
+  will-change: transform, opacity;
+  z-index: 10;
+}
+
+.zoom-enter, .zoom-leave-active {
+  opacity: 0;
+  transform: scale(0.5);
+}
+
+.zoom-enter-active, .zoom-leave-active {
+  transition: opacity .2s linear, transform .5s cubic-bezier(0, 0, 0.3, 1);
+}
+
+.close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 4vh;
+  cursor: pointer;
+}
+
+.quick-view-trailer-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
 .quick-view-trailer {

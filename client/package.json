@@ -9,6 +9,7 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "compression-webpack-plugin": "^0.3.2",
     "node-sass": "^3.11.2",
     "sass-loader": "^4.0.2",
     "vue": "^2.0.1"

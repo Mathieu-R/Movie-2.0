@@ -3,6 +3,7 @@
     <header class="header">
 			<nav class="menu">
 				<ul>
+          <li class="logo">Chronopolis</li>
 					<li><a @click="topMovie" href="#">Top</a></li>
 					<li @click="theatersMovie"><a href="#">Films actuellements au cinéma</a></li>
 					<li id="fixChamps"><input type=text v-model=search class="search" placeholder="Recherche..." @keyup.enter="searchMovie"></li>
@@ -108,6 +109,12 @@
 </script>
 
 <style lang="scss">
+
+  .logo {
+    font-family: Raleway;
+    font-size: 24px;
+    font-weight: bold;
+  }
 
   .loading-wrapper {
     font-family: Roboto;
