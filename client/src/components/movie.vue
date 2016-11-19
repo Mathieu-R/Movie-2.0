@@ -28,7 +28,7 @@
         <h2 class="quick-view-title">{{movie.title}}</h2>
         <h5 class=quick-view-subtitles>{{movie.original_title}} - {{movie.original_language}} - {{movie.release_date}} - <span class="movie-preview-note">{{movie.vote_average}}</span></h5>
         <div class="quick-view-subblock">
-          <img :src="'http://image.tmdb.org/t/p/w500' + movie.poster_path" alt="poster" class="quick-view-poster">
+          <!--<img :src="'http://image.tmdb.org/t/p/w500' + movie.poster_path" alt="poster" class="quick-view-poster">-->
           <div class="quick-view-description">
             <p class="quick-view-description-p">{{movie.overview}}</p>
           </div>
@@ -60,7 +60,7 @@
 
         const offsetTop = preview.offsetTop;
         const offsetView = previewBCR.top;
-        const deplacement = offsetTop - offsetView - 15;
+        const deplacement = offsetTop - offsetView - 55;
 
         console.log(offsetTop, offsetView);
         console.log(deplacement);
@@ -71,6 +71,7 @@
       showQuickView(id) {
 
         document.body.style.overflow = 'hidden';
+        document.body.classList.add('zooming');
 
         this.quickView = true;
 
@@ -99,6 +100,7 @@
       closeQuickView() {
         this.quickView = false;
         document.body.style.overflow = 'scroll';
+        document.body.classList.remove('zooming');
       }
     }
 
@@ -149,16 +151,23 @@ img {
   margin-bottom: 3px;
 }
 
-.quick-view::before {
+body.zooming::before {
+  opacity: 1;
+  pointer-events: auto;
+  z-index: 8;
+}
+
+body::before {
   content: '';
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.4);
+  background: rgba(0, 0, 0, 0.7);
   opacity: 0;
-  transition: opacity .3s linear;
+  transition: opacity .2s linear;
+  pointer-events: none;
 }
 
 .quick-view {
@@ -168,7 +177,7 @@ img {
   right: 50px;
   bottom: 50px;
   height: 100%;
-  background: #5e5f60;
+  background: #1e2328;
   padding: 15px;
   overflow: hidden;
   border-radius: 10px;
@@ -176,6 +185,7 @@ img {
   transform: scale(1);
   will-change: transform, opacity;
   z-index: 10;
+  overflow: auto;
 }
 
 .zoom-enter, .zoom-leave-active {
@@ -197,6 +207,7 @@ img {
 
 .quick-view-trailer-wrapper {
   width: 100%;
+  max-height: 100%;
   display: flex;
   justify-content: center;
 }
@@ -211,7 +222,7 @@ img {
   display: flex;
   position: relative;
   max-width: 750px;
-  max-height: 375px;
+  max-height: 100%;
 }
 
 .quick-view-trailer-link:before {
@@ -253,7 +264,6 @@ img {
 
 .quick-view-subblock {
   display: flex;
-  flex-direction: row;
 }
 
 .quick-view-poster {
